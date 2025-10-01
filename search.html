@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>search </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+</head>
+<body class="bg-[#0d0d0d] text-white">
+
+
+
+    <div class="p-10 flex  gap-6 max-w-6xl mx-auto">
+        <input type="text" placeholder="Search By Name" class="p-3 bg-[#0d0d0d] border rounded-lg text-white w-full">
+        <input type="text" placeholder="Search By First Letter" class="p-3 rounded-lg bg-[#0d0d0d] border text-white  w-full">
+    </div>
+
+    <div class="container" id="search">
+    <div class="row g-4 mt-2 position-relative searchs">
+        
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+  const $searchByName = $("input[placeholder='Search By Name']");
+  const $searchByFirstLetter = $("input[placeholder='Search By First Letter']");
+  const $resultsContainer = $("#search .searchs");
+
+  $resultsContainer.empty();
+
+  $searchByName.on("keyup", function () {
+    const query = $(this).val().trim();
+    $searchByFirstLetter.val("");
+    if (query.length >= 2) {
+      $.getJSON(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
+        function (data) {
+          displayMeals(data.meals);
+        }
+      );
+    } else {
+      $resultsContainer.empty();
+    }
+  });
+
+  $searchByFirstLetter.on("keyup", function () {
+    const query = $(this).val().trim();
+    $searchByName.val("");
+    if (query.length === 1) {
+      $.getJSON(
+        `https://www.themealdb.com/api/json/v1/1/search.php?f=${query}`,
+        function (data) {
+          displayMeals(data.meals);
+        }
+      );
+    } else {
+      $resultsContainer.empty();
+    }
+  });
+
+  function displayMeals(meals) {
+    $resultsContainer.empty();
+    if (meals) {
+      meals.forEach((meal) => {
+        $resultsContainer.append(`
+          <div class="col-lg-3 col-md-6 col-sm-12 image-container d-block position-relative">
+            <a href="detailsHome.html?id=${meal.idMeal}" class="d-block position-relative">
+              <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="w-100 rounded">
+              <div class="overlay cursor-pointer position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                <h3 class="text-xl fw-bolder">${meal.strMeal}</h3>
+              </div>
+            </a>
+          </div>
+        `);
+      });
+    } else {
+      $resultsContainer.html(`<p class="text-center text-white">No meals found</p>`);
+    }
+  }
+});
+</script>
+
+</body>
+</html>
