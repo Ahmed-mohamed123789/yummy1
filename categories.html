@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link rel="stylesheet" href="index.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>categories</title>
+
+    <style>
+        body{
+            background-color: #0d0d0d;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+  
+    <div class="container">
+        <div class="row g-4">
+             
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+  $.ajax({
+    url: 'https://www.themealdb.com/api/json/v1/1/categories.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(response) {
+      const categories = response.categories;
+
+      const $row = $('.row');
+
+      $row.empty();
+            
+
+      categories.forEach(categories => {
+        $row.append(`
+          <div class="col-lg-3 col-md-6 col-sm-12 image-categories d-block">
+            <a href="categName.html?category=${encodeURIComponent(categories.strCategory)}">
+                <img src="${categories.strCategoryThumb}"  class="w-100" alt="">
+
+
+
+                <div class="overlay-categories d-flex flex-column text-center">
+                    <h3 class="text-white text-l  fw-bolder">${categories.strCategory}</h3>
+                    <p class="text-white">${categories.strCategoryDescription}</p>
+                </div>
+                                </a>
+
+             </div>
+        `);
+      });
+    },
+    error: function(xhr, status, err) {
+      console.error('حصل خطأ في الطلب:', err);
+    }
+  });
+});
+    </script>
+
+
+
+
+<!-- كل الكاتيجورى	https://www.themealdb.com/api/json/v1/1/categories.php
+كل الوجبات فى كاتيجورى	https://www.themealdb.com/api/json/v1/1/filter.php?c=اسم_التصنيف
+تفاصيل وجبة معينة	https://www.themealdb.com/api/json/v1/1/lookup.php?i=ID_الوجبة -->
+
+
+
+<!-- www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast -->
+</body>
+</html>

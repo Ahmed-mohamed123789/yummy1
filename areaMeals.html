@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
+    <title>areaMeals</title>
+
+        <style>
+        body{
+            background-color: #0d0d0d;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row g-4 mt-2 position-relative">
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function(){
+            const params = new URLSearchParams(window.location.search);
+            const area = params.get('area'); 
+
+            $.ajax({
+                url: `https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const meals = response.meals;
+                    const $row = $('.row');
+                    $row.empty();
+
+                    meals.forEach(meal => {
+                        $row.append(`
+                          <div class="col-lg-3 col-md-6 col-sm-12">
+                            <a href="mealDetails.html?id=${meal.idMeal}" class="d-block image-container">
+                              <img src="${meal.strMealThumb}" class="rounded-2 cursor-pointer w-100" alt="${meal.strMeal}">
+                              <div class="overlay cursor-pointer">
+                                <h2 class="text-2xl fw-bolder overlay-text">${meal.strMeal}</h2>
+                              </div>
+                            </a>
+                          </div>
+                        `);
+                    });
+                },
+                error: function(xhr, status, err) {
+                    console.error('حصل خطأ في الطلب:', err);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <title>AREA</title>
+
+  <style>
+    a,*{
+      text-decoration: none;
+      color: #f9f6f6;
+    }
+    body{
+      background-color: #0d0d0d;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row g-5">
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+      $.ajax({
+        url: 'https://www.themealdb.com/api/json/v1/1/list.php?a=list',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          const areas = response.meals;
+          const $row = $('.row');
+          $row.empty();
+
+          areas.forEach(area => {
+            $row.append(`
+              <div class="col-md-3 col-lg-3 col-sm-12">
+                <div class="text-center">
+                  <a href="areaMeals.html?area=${area.strArea}">
+                    <i class="fa-solid fa-house-laptop fa-4x"></i>
+                    <h2>${area.strArea}</h2>
+                  </a>
+                </div>
+              </div>
+            `);
+          });
+        },
+        error: function(xhr, status, err) {
+          console.error('حصل خطأ في الطلب:', err);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
